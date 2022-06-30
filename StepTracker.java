@@ -97,9 +97,11 @@ public class StepTracker {
 			} else {
 				series = 0;
 			}
+		} if (result == 1) {
+		return result = 0;
+		} else {
+			return result;
 		}
-		return (result+1);
 	}
 } 
-
 
