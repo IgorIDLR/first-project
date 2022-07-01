@@ -1,15 +1,11 @@
-package calculator;
-
 public class Converter {
-	
-	final double stepLength = 0.00075;
-	final double stepCalories = 0.05;
-	
-	double lengthStepKm (int sumStep) {
-		return (double)(sumStep * stepLength);
-		
-	}
-	 double burnCalories(int sumStep) {
-		 return (double)(sumStep * stepCalories);
-	 }
+    final double STEP_LENGTH = 0.00075;
+    final double STEP_CALORIES = 0.05;
+
+    double lengthStepKm(int sumStep) {
+        return (double) (sumStep * STEP_LENGTH);
+    }
+    double burnCalories(int sumStep) {
+        return (double) (sumStep * STEP_CALORIES);
+    }
 }
