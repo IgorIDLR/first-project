@@ -1,107 +1,83 @@
-package calculator;
-
 import java.util.Scanner;
-
 public class StepTracker {
-	int[][] days;
-	String[] month = {"Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октюбрь","Ноябрь","Декабрь"};
-	int step = 0;
-	int intentionStep = 10;
-	
-	StepTracker() {
-		days = new int[12][];
-		days[0] = new int [31];
-		days[1] = new int [28];
-		days[2] = new int [31];
-		days[3] = new int [30];
-		days[4] = new int [31];
-		days[5] = new int [30];
-		days[6] = new int [31];
-		days[7] = new int [31];
-		days[8] = new int [30];
-		days[9] = new int [31];
-		days[10] = new int [30];
-		days[11] = new int [31];
-	}
-	Scanner sc = new Scanner(System.in);
-	
-	void stepMenu() {
-		
-		System.out.print("Какой месяц? ");
-		int command = sc.nextInt();
-		
-		if(command > 0 && command <= 12) {
-			System.out.print(month[command-1]+ ".");
-			
-			System.out.print("Какой день?: ");
-			int comDays = sc.nextInt();
-			if(comDays > 0 && comDays <= days[command-1].length) {
-				System.out.println("Введите количество шагов: ");
-				this.step = sc.nextInt();
-				if (step >= 0) {
-				days[command - 1][comDays - 1] += step;
-				System.out.println("Данные сохранены!");
-				}
-			}
-		}
-	}
-	void statistics (int Month) {
-		
-		System.out.println(month[Month-1]);
-		for(int i = 0; i < days[Month-1].length; i++) {	
-			System.out.print((i+1) + " День: " + days[Month-1][i] + ", ");
-			}
-		System.out.println();
-		}
-	
-	 int sumStepMonth (int Month) {
-		int sum = 0;
-		for(int i = 0; i < days[Month-1].length; i++) {	
-			sum += days[Month-1][i];
-		}
-		return sum;
-	}
-	
-	int maxStep (int Month) {
-		int max = 0;
-		for (int i = 0; i < days[Month-1].length; i++) {
-			if (days[Month-1][i] > max) {
-				max = days[Month-1][i];
-			}
-		}
-		return max;
-	}
-	
-	int avgStep (int sum, int Month) {
-		return Math.round(sum/days[Month-1].length);
-	}
-	
-	int purpose() {
-		System.out.println("На данный момент цель составляет: " + intentionStep + " шагов в день");
-		int newPurpose = sc.nextInt();
-		if (newPurpose >= 0) {
-			intentionStep += newPurpose;
-		}
-		return intentionStep;
-	}
-	
-	int bestLengtht(int month) {
-		int series = 0;
-		int result = 0;
-		for(int i = 0; i < days[month-1].length; i++) {
-			if(days[month-1][i] >= intentionStep) {
-				series++;
-				if(result < series) {
-					result = series;
-				}
-			} else {
-				series = 0;
-			}
-		} if (result == 1) {
-		return result = 0;
-		} else {
-			return result;
-		}
-	}
-} 
+    MonthDays[] month;
+    int sum = 0;
+    int intentionStep = 10_000;
+    Scanner sc = new Scanner(System.in);
+    StepTracker() {
+        month = new MonthDays[12];
+        for(int i = 0; i < month.length; i++) {
+            month[i] = new MonthDays();
+        }
+    }
+    public void addStep () {
+        System.out.print("Месяц: ");
+        int mon = sc.nextInt();
+        if(mon > 0 && mon <= 12) {
+            System.out.print("День: ");
+            int day = sc.nextInt();
+            if (day >= 1 && day <= 30) {
+                System.out.print("Шаги: ");
+                int step = sc.nextInt();
+                if (step > 0) {
+                    month[mon-1].days[day-1] += step;
+                    return;
+                }
+            }
+        }
+    }
+    void stat (int a) {
+        for(int i = 0; i < month[a-1].days.length; i++) {
+            System.out.print((i+1) + ". День: " + month[a-1].days[i] + "; ");
+        }
+        System.out.println();
+    }
+    int sumStepMonth (int a) {
+        int sum = 0;
+        for(int i = 0; i < month[a-1].days.length; i++) {
+            sum += month[a-1].days[i];
+        }
+        return sum;
+    }
+    int maxStepMonth (int a) {
+        int max = 0;
+        for(int i = 0; i < month[a-1].days.length; i++) {
+            if(max < month[a-1].days[i]) {
+                max = month[a-1].days[i];
+            }
+        }
+        return max;
+    }
+    int avgStepMonth (int a) {
+        return sumStepMonth(a)/month[a-1].days.length;
+    }
 
+    int seriesStep(int a) {
+        int series = 0;
+        int seriesMax = 0;
+        for(int i : month[a-1].days) {
+            if (month[a-1].days[i] >= intentionStep) {
+                series++;
+                if (seriesMax < series) {
+                    seriesMax = series;
+                } else {
+                    series = 0;
+                }
+            }
+        }
+        if (seriesMax == 1) return 0;
+        else return seriesMax;
+    }
+    int purpose () {
+        System.out.println("На данный момент цель составляет: " + intentionStep + " шагов в день");
+        System.out.print("Изменение целевого количества шагов на: ");
+        int newPurpose = sc.nextInt();
+        if(newPurpose >= 0) {
+            intentionStep += newPurpose;
+        }
+        return intentionStep;
+    }
+}
+class MonthDays {
+    int[] days = new int[30];
+}
